@@ -10,16 +10,15 @@ int main()
   // acceleration due to gravity (pixels/frame)/frame
   int gravity{1};
 
-  // rectagule dimensions
-  const int width{50};
-  const int height{80};
+  Texture2D scarfy = LoadTexture("textures/scarfy.png");
+  Rectangle scarfyRec = {0.0f, 0.0f, (float)scarfy.width / 6, (float)scarfy.height};
+  Vector2 scarfyPos = {windowWidth / 2.0f - scarfyRec.width / 2.0f, windowHeight - scarfyRec.height};
 
   // is the rectangle in the air?
   bool isInAir{false};
   // jump velocity
   const int jumpVelocity{-22};
 
-  int posY{windowHeight - height}; // Start at the bottom of the window
   int velocity{0};
 
   // Set the target FPS
@@ -35,7 +34,7 @@ int main()
     ClearBackground(WHITE);
 
     // perform ground check
-    if (posY >= windowHeight - height)
+    if (scarfyPos.y >= windowHeight - scarfyRec.height)
     {
       velocity = 0;
       isInAir = false;
@@ -54,13 +53,14 @@ int main()
     }
 
     // update position
-    posY += velocity;
+    scarfyPos.y += velocity;
 
-    DrawRectangle((windowWidth - width) / 2, posY, width, height, BLUE);
+    DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
 
     EndDrawing();
   }
 
+  UnloadTexture(scarfy);
   // De-Initialization
   CloseWindow(); // Close window and OpenGL context
 
