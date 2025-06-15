@@ -14,6 +14,9 @@ int main()
   const int width{50};
   const int height{80};
 
+  // is the rectangle in the air?
+  bool isInAir{false};
+
   int posY{windowHeight - height}; // Start at the bottom of the window
   int velocity{0};
 
@@ -33,14 +36,16 @@ int main()
     if (posY >= windowHeight - height)
     {
       velocity = 0;
+      isInAir = false;
     }
     else
     {
       // apply gravity
       velocity += gravity;
+      isInAir = true;
     }
 
-    if (IsKeyPressed(KEY_SPACE))
+    if (IsKeyPressed(KEY_SPACE) && !isInAir)
     {
       velocity -= 10;
     }
