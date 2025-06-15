@@ -14,6 +14,14 @@ int main()
   Rectangle scarfyRec = {0.0f, 0.0f, (float)scarfy.width / 6, (float)scarfy.height};
   Vector2 scarfyPos = {windowWidth / 2.0f - scarfyRec.width / 2.0f, windowHeight - scarfyRec.height};
 
+  // animation frame counter
+  int frame{};
+
+  // amount of time before we update the animation frame
+  float updateTime{1.0 / 12.0f}; // 12 FPS
+
+  float runningTime{};
+
   // is the rectangle in the air?
   bool isInAir{false};
   // jump velocity (pixels/s)
@@ -27,6 +35,7 @@ int main()
   // Main game loop
   while (!WindowShouldClose())
   {
+
     // delta time (time since last frame)
     float dT{GetFrameTime()};
 
@@ -55,6 +64,20 @@ int main()
 
     // update position
     scarfyPos.y += velocity * dT;
+
+    // update running time
+    runningTime += dT;
+    if (runningTime >= updateTime)
+    {
+      runningTime = 0.0f;
+      // update animation frame
+      scarfyRec.x = (frame % 6) * scarfyRec.width;
+      frame++;
+      if (frame > 5)
+      {
+        frame = 0;
+      }
+    }
 
     DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
 
