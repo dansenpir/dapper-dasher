@@ -10,6 +10,15 @@ int main()
   // acceleration due to gravity (pixels/s)/s
   int gravity{1000};
 
+  // nebula variable declarations
+  Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
+  Rectangle nebRec = {0.0f, 0.0f, (float)nebula.width / 8, (float)nebula.height / 8};
+  Vector2 nebPos = {windowWidth, windowHeight - nebRec.height};
+
+  // nebula X velocity (pixels/s)
+  int nebVel{-600};
+
+  // scarfy variable declarations
   Texture2D scarfy = LoadTexture("textures/scarfy.png");
   Rectangle scarfyRec = {0.0f, 0.0f, (float)scarfy.width / 6, (float)scarfy.height};
   Vector2 scarfyPos = {windowWidth / 2.0f - scarfyRec.width / 2.0f, windowHeight - scarfyRec.height};
@@ -62,7 +71,10 @@ int main()
       velocity += jumpVelocity;
     }
 
-    // update position
+    // update nebula position
+    nebPos.x += nebVel * dT;
+
+    // update scarfy position
     scarfyPos.y += velocity * dT;
 
     // update running time
@@ -79,12 +91,17 @@ int main()
       }
     }
 
+    // draw nebula
+    DrawTextureRec(nebula, nebRec, nebPos, WHITE);
+
+    // draw scarfy
     DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
 
     EndDrawing();
   }
 
   UnloadTexture(scarfy);
+  UnloadTexture(nebula);
   // De-Initialization
   CloseWindow(); // Close window and OpenGL context
 
